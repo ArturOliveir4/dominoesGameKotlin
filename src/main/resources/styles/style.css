@@ -1,0 +1,128 @@
+.botao-dificuldade {
+    -fx-background-color: #5978cf;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+.botao-dificuldade:hover {
+    -fx-background-color: #445c9e;
+}
+
+.botao-comecar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+.botao-comecar:hover {
+    -fx-background-color: #45a049;
+}
+
+.botao-sair {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+.botao-sair:hover {
+    -fx-background-color: #d32f2f;
+}
+
+.botao-facil {
+    -fx-background-color: #945fd9;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 5 20 5 20;
+    -fx-cursor: hand;
+}
+
+.botao-peca{
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-pref-width: 80px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.botao-peca-mao{
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 80px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.0), 0, 0, 0, 0);
+}
+
+.botao-direita-mao{
+    -fx-background-color: #99ffbb;
+    -fx-border-color: #2e7d32;
+    -fx-border-width: 3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-pref-width: 90px;
+    -fx-pref-height: 50px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.botao-comprar{
+    -fx-background-color: #828181;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.bota-sair-mao{
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.botao-voltar-menu{
+    -fx-background-color: #26ff6f;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.botao-sair-tela-final{
+    -fx-background-color: #a30013;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}

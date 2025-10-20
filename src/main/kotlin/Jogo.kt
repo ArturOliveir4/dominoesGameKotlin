@@ -1,3 +1,6 @@
+
+// Falta organizar essa classe, existem algun métodos que não foram utilizados
+
 class Jogo {
     private var pontaEsquerda: Int = -1
     private var pontaDireita: Int = -1
@@ -11,19 +14,6 @@ class Jogo {
     private var vencedor : Jogador? = null
 
     constructor()
-
-    constructor(pontaEsquerda: Int, pontaDireita: Int, mesa : MutableList<Peca>, montante : MutableList<Peca>
-    , jogadorHumano : Jogador, jogadorMaquina : Jogador, turno : Boolean, fimDeJogo : Boolean, turnoPassadoSemJogar : Int) {
-        this.pontaEsquerda = pontaEsquerda
-        this.pontaDireita = pontaDireita
-        this.mesa = mesa
-        this.montante = montante
-        this.jogadorHumano = jogadorHumano
-        this.jogadorMaquina = jogadorMaquina
-        this.turno = turno
-        this.fimDeJogo = fimDeJogo
-        this.turnoPassadoSemJogar = turnoPassadoSemJogar
-    }
 
     fun iniciarJogo() {
         // Criando todas as peças do jogo e adicionando no montante
@@ -556,7 +546,6 @@ class Jogo {
         }
         return null
     }
-
 
     fun getFimDeJogo() : Boolean {
         return this.fimDeJogo
