@@ -20,6 +20,7 @@ import javafx.scene.input.TransferMode
 // Váriavel global da dificuldade
 object GameSession {
     var dificuldade: Int = 0
+    var modo: Int = 0
 }
 
 // Funçãoo utilizada no turno da máquina
@@ -80,6 +81,7 @@ class DominóFX : Application() {
         stage.scene = cena
         stage.isFullScreen = true
         stage.show()
+
     }
 
     // Tela inicial (Começar, Dificuldade, Sair)
@@ -92,15 +94,28 @@ class DominóFX : Application() {
         val botaoComecar = Button("Começar Jogo")
         val botaoSair = Button("Sair")
         val botaoDificuldade = Button("Dificuldade")
+        val botaoModo = Button("Modo")
 
         botaoComecar.styleClass.add("botao-comecar")
         botaoSair.styleClass.add("botao-sair")
         botaoDificuldade.styleClass.add("botao-dificuldade")
+        botaoModo.styleClass.add("botao-modo")
 
         val opcoesDificuldade = HBox(10.0)
         opcoesDificuldade.isVisible = false
         opcoesDificuldade.isManaged = false
         opcoesDificuldade.alignment = Pos.CENTER
+
+        val ocpoesModo = HBox(10.0)
+        ocpoesModo.isVisible = false
+        ocpoesModo.isManaged = false
+        ocpoesModo.alignment = Pos.CENTER
+
+        val classico = Button("Clássico")
+        val pontos = Button("Pontos")
+
+        classico.styleClass.add("botao-classico")
+        pontos.styleClass.add("botao-pontos")
 
         val facil = Button("Fácil")
         val medio = Button("Médio")
@@ -135,15 +150,37 @@ class DominóFX : Application() {
             titulo.text = "Dificuldade alterada (Difícil)"
         }
 
+        botaoModo.setOnAction {
+            val novoEstado = !ocpoesModo.isVisible
+            ocpoesModo.isVisible = novoEstado
+            ocpoesModo.isManaged = novoEstado
+        }
+
+        classico.setOnAction{
+            GameSession.modo = 0
+            titulo.text = "Modo alterado (Clássico)"
+
+        }
+
+        pontos.setOnAction{
+            GameSession.modo = 1
+            titulo.text = "Modo alterado (Pontos)"
+        }
+
         botaoSair.setOnAction {
             Platform.exit()
         }
 
         opcoesDificuldade.children.addAll(facil, medio, dificil)
+        ocpoesModo.children.addAll(classico, pontos)
+
         val menuVBox = VBox(15.0, botaoDificuldade, opcoesDificuldade)
         menuVBox.alignment = Pos.CENTER
 
-        rootInicial.children.addAll(titulo, botaoComecar, menuVBox, botaoSair)
+        val menuModoVBox = VBox(15.0, botaoModo, ocpoesModo)
+        menuModoVBox.alignment = Pos.CENTER
+
+        rootInicial.children.addAll(titulo, botaoComecar, menuVBox, menuModoVBox, botaoSair)
 
         val sceneInicial = Scene(rootInicial, 600.0, 400.0)
         sceneInicial.stylesheets.add(javaClass.getResource("/styles/style.css")!!.toExternalForm())
@@ -154,8 +191,8 @@ class DominóFX : Application() {
 
 
     fun mostrarTelaJogo(stage: Stage) {
-        jogo.iniciarJogo()
-        jogo.primeiraJogada()
+        jogo.iniciarJogoRapido(GameSession.dificuldade, GameSession.modo)
+        jogo.primeiraJogadaRapido()
 
         val mensagem = Label("Começo de jogo!")
         val contadorMaquina = HBox(5.0)
@@ -188,11 +225,12 @@ class DominóFX : Application() {
 
             // Verificando o fim de jogo a cada atualização de interface
             if(jogo.verificarFimDeJogo()){
-                mensagem.text = "O JOGO ACABOU!!!!!"
+                jogo.somarPontos()
                 stage.scene = telaFimDeJogo(stage)
                 stage.isFullScreen = true
                 return
             }
+
 
             // Peças da mesa
             mesaPane.children.clear()
@@ -665,8 +703,156 @@ class DominóFX : Application() {
         atualizarInterface()
     }
 
+    fun telaFimRodada(stage: Stage) : Scene {
+        val vencedor = jogo.getVencedor()
+        val mensagemFinal = if (vencedor != null) {
+            if (vencedor.getNome() == "Maquina") {
+                "A máquina venceu a rodada! \nPontuação (Máquina): " + jogo.getJogadorMaquina().getPontuacao() + "\nPontuação (Jogador): " + jogo.getJogadorHumano().getPontuacao()
+            } else{
+                "Você venceu a rodada! \nPontuação (Jogador): " + jogo.getJogadorHumano().getPontuacao() + "\nPontuação (Máquina): " + jogo.getJogadorMaquina().getPontuacao()
+            }
+
+        } else {
+            "Empate\n Pontuação (Jogador): " + jogo.getJogadorHumano().getPontuacao() + "\nPontuação (Máquina): " + jogo.getJogadorMaquina().getPontuacao()
+        }
+
+        var mensagemVencedor = ""
+        if(jogo.getJogadorHumano().getPontuacao() >= 50 && jogo.getJogadorMaquina().getPontuacao() < 50){
+            mensagemVencedor = "O jogador Humano venceu!!"
+        } else if(jogo.getJogadorMaquina().getPontuacao() >= 50 && jogo.getJogadorHumano().getPontuacao() < 50){
+            mensagemVencedor = "A máquina venceu!!"
+        } else if(jogo.getJogadorMaquina().getPontuacao() >= 50 && jogo.getJogadorHumano().getPontuacao() >= 50){
+            mensagemVencedor = "Empate WOOW!"
+        }
+
+        val labelVencedor = Label(mensagemVencedor)
+
+        val label = Label(mensagemFinal)
+        val acoesPane = HBox(5.0)
+        acoesPane.alignment = Pos.CENTER
+
+        if(mensagemVencedor != ""){
+            val telaFinalRodada = VBox(20.0, label, labelVencedor)
+            telaFinalRodada.alignment = Pos.CENTER
+
+            val scene = Scene(telaFinalRodada, 800.0, 600.0)
+            scene.stylesheets.add(javaClass.getResource("/styles/style.css")!!.toExternalForm())
+            stage.isFullScreen = true
+            return scene
+
+        }else{
+            val telaFinalRodada = VBox(20.0, label, acoesPane, labelVencedor)
+            telaFinalRodada.alignment = Pos.CENTER
+
+
+            val botaoContinuar = Button("Continuar")
+            botaoContinuar.styleClass.add("botao-continuar-menu-rodada")
+            val botaoSair = Button("Sair")
+            botaoContinuar.styleClass.add("botao-sair-menu-rodada")
+
+
+            botaoContinuar.setOnMouseEntered {
+                botaoContinuar.style = """
+                -fx-background-color: #3bd46f;  
+                -fx-text-fill: white;
+                -fx-font-size: 12px;
+                -fx-font-weight: bold;
+                -fx-background-radius: 8;
+                -fx-padding: 5 10 5 10;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+                -fx-cursor: hand;
+            """.trimIndent()
+
+                val st = ScaleTransition(Duration.millis(150.0), botaoContinuar)
+                st.toX = 1.05
+                st.toY = 1.05
+                st.play()
+            }
+
+            botaoContinuar.setOnMouseExited {
+                botaoContinuar.style = """
+                -fx-background-color: #26ff6f;  
+                -fx-text-fill: white;            
+                -fx-font-size: 12px;             
+                -fx-font-weight: bold;            
+                -fx-background-radius: 8;        
+                -fx-padding: 5 10 5 10;          
+                -fx-cursor: hand;
+                -fx-effect: none;
+            """.trimIndent()
+
+                val st = ScaleTransition(Duration.millis(150.0), botaoContinuar)
+                st.toX = 1.0
+                st.toY = 1.0
+                st.play()
+            }
+
+            botaoSair.setOnMouseEntered {
+                botaoSair.style = """
+                -fx-background-color: #248a46;  
+                -fx-text-fill: white;
+                -fx-font-size: 12px;
+                -fx-font-weight: bold;
+                -fx-background-radius: 8;
+                -fx-padding: 5 10 5 10;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+                -fx-cursor: hand;
+            """.trimIndent()
+
+                val st = ScaleTransition(Duration.millis(150.0), botaoSair)
+                st.toX = 1.05
+                st.toY = 1.05
+                st.play()
+            }
+
+            botaoSair.setOnMouseExited {
+                botaoSair.style = """
+                -fx-background-color: #3bd46f;  
+                -fx-text-fill: white;            
+                -fx-font-size: 12px;             
+                -fx-font-weight: bold;            
+                -fx-background-radius: 8;        
+                -fx-padding: 5 10 5 10;          
+                -fx-cursor: hand;
+                -fx-effect: none;
+            """.trimIndent()
+
+                val st = ScaleTransition(Duration.millis(150.0), botaoSair)
+                st.toX = 1.0
+                st.toY = 1.0
+                st.play()
+            }
+
+            botaoContinuar.setOnAction {
+                jogo = Jogo()
+                mostrarTelaJogo(stage)
+            }
+
+            botaoSair.setOnAction {
+                Platform.exit()
+            }
+
+            botaoContinuar.alignment = Pos.CENTER
+            botaoSair.alignment = Pos.CENTER
+            acoesPane.children.add(botaoContinuar)
+            acoesPane.children.add(botaoSair)
+
+            val scene = Scene(telaFinalRodada, 800.0, 600.0)
+            scene.stylesheets.add(javaClass.getResource("/styles/style.css")!!.toExternalForm())
+            stage.isFullScreen = true
+            return scene
+        }
+    }
+
+
     // Tela de conclusão após o fim de jogo (Menu inicial, Sair)
     fun telaFimDeJogo(stage: Stage) : Scene {
+        if(jogo.getModo() == 1){
+            stage.scene = telaFimRodada(stage)
+            stage.isFullScreen = true
+            return stage.scene
+        }
+
         val vencedor = jogo.getVencedor()
         val mensagemFinal = if (vencedor != null) {
             if (vencedor.getNome() == "Maquina") "A máquina venceu!" else "Você venceu!"

@@ -1,3 +1,4 @@
+import java.time.LocalDate
 
 // Falta organizar essa classe, existem algun métodos que não foram utilizados
 
@@ -6,16 +7,35 @@ class Jogo {
     private var pontaDireita: Int = -1
     private var mesa : MutableList<Peca> = mutableListOf()
     private var montante : MutableList<Peca> = mutableListOf()
-    private var jogadorHumano : Jogador = Jogador("Humano", mutableListOf())
-    private var jogadorMaquina : Jogador = Jogador("Maquina", mutableListOf())
+    private var jogadorHumano : Jogador = Jogador("Humano")
+    private var jogadorMaquina : Jogador = Jogador("Maquina")
     private var turno : Boolean = true
     private var fimDeJogo : Boolean = false
     private var turnoPassadoSemJogar : Int = 0
     private var vencedor : Jogador? = null
+    private var modo : Int = 0
 
     constructor()
 
-    fun iniciarJogo() {
+    fun iniciarJogo(dificuldade : Int, modo : Int) {
+
+        // Salvando a dificuldade selecionada no jogador
+        if (dificuldade == 0){
+            this.jogadorHumano.setDificuldade("Facil")
+        } else if (dificuldade == 1){
+            this.jogadorHumano.setDificuldade("Medio")
+        } else{
+            this.jogadorHumano.setDificuldade("Dificil")
+        }
+
+        // Salvando o modo de jogo escolhido
+        if(modo == 0){
+            this.modo = 0
+        } else {
+            this.modo = 1
+        }
+
+        this.jogadorHumano.setDificuldade("")
         // Criando todas as peças do jogo e adicionando no montante
         for(i in 0..6){
             for(j in 0..6){
@@ -70,87 +90,84 @@ class Jogo {
         }
     }
 
+    fun iniciarJogoRapido(dificuldade: Int, modo: Int) {
+
+        // Salvando a dificuldade selecionada no jogador
+        if (dificuldade == 0){
+            this.jogadorHumano.setDificuldade("Facil")
+        } else if (dificuldade == 1){
+            this.jogadorHumano.setDificuldade("Medio")
+        } else{
+            this.jogadorHumano.setDificuldade("Dificil")
+        }
+
+        // Salvando o modo de jogo escolhido
+        if(modo == 0){
+            this.modo = 0
+        } else {
+            this.modo = 1
+        }
+
+        this.jogadorHumano.setDificuldade("")
+        // Criando todas as peças do jogo e adicionando no montante
+        for(i in 0..2){
+            for(j in 0..2){
+                montante.add(Peca(i,j))
+            }
+        }
+
+        // Embaralhando o montante
+        montante.shuffle()
+
+        // Distribuindo as peças para os jogadores
+        for(i in 0..2){
+            jogadorMaquina.getMao().add(montante.removeAt(0))
+            jogadorHumano.getMao().add(montante.removeAt(0))
+        }
+    }
+
+    fun primeiraJogadaRapido() {
+        // Verificando qual jogador possua a peça de dupla mais alta e joga essa peça
+        for(i in 2 downTo 0){
+            val peca = jogadorMaquina.getMao().find { it.getLadoEsquerdo() == i && it.getLadoDireito() == i }
+            if(peca != null) {
+                jogarPeca(peca)
+                jogadorMaquina.getMao().remove(peca)
+                this.turno = true
+                return
+            } else {
+                val peca = jogadorHumano.getMao().find { it.getLadoEsquerdo() == i && it.getLadoDireito() == i }
+                if(peca != null) {
+                    jogarPeca(peca)
+                    jogadorHumano.getMao().remove(peca)
+                    this.turno = false
+                    return
+                }
+            }
+        }
+
+        // Caso não haja duplas: pegar peça com maior soma
+        val pecaMaquina = jogadorMaquina.getMao().maxByOrNull { it.getLadoEsquerdo() + it.getLadoDireito() }
+        val pecaHumano = jogadorHumano.getMao().maxByOrNull { it.getLadoEsquerdo() + it.getLadoDireito() }
+
+        // Decide quem joga a peça inicial
+        if((pecaHumano?.getLadoEsquerdo()!! + pecaHumano.getLadoDireito()) >=
+            (pecaMaquina?.getLadoEsquerdo()!! + pecaMaquina.getLadoDireito())) {
+            mesa.add(pecaHumano)
+            jogadorHumano.getMao().remove(pecaHumano)
+            this.turno = true
+        } else {
+            mesa.add(pecaMaquina!!)
+            jogadorMaquina.getMao().remove(pecaMaquina)
+            this.turno = false
+        }
+    }
+
+
     fun jogarPeca(peca : Peca){
         mesa.add(peca)
         pontaEsquerda = mesa.first().getLadoEsquerdo()
         pontaDireita = mesa.last().getLadoDireito()
-    }
-
-    fun jogarHumano(){
-        var cond = true
-        // Enquanto o jogador não jogar e comprar do montante:
-        while(cond) {
-            // Verificando se existe alguma jogada possível na mão do jogador
-            if (maoValidaHumano()) {
-                // Obtendo a peça que será validada
-                val pecaEscolhida = pecaValida()
-
-                // Verificando as possibilidades de jogada da peça brevemente
-                val podeEsquerda =
-                    pecaEscolhida.getLadoEsquerdo() == pontaEsquerda || pecaEscolhida.getLadoDireito() == pontaEsquerda
-                val podeDireita =
-                    pecaEscolhida.getLadoEsquerdo() == pontaDireita || pecaEscolhida.getLadoDireito() == pontaDireita
-
-                // Analisando espeficamente as possibilidades e realizando a jogada
-                when {
-                    podeEsquerda && !podeDireita -> {
-                        jogarNaMesa(pecaEscolhida, 'E')
-                    }
-
-                    !podeEsquerda && podeDireita -> {
-                        jogarNaMesa(pecaEscolhida, 'D')
-                    }
-
-
-                    podeEsquerda && podeDireita -> {
-                        var escolhaValida = false
-                        while (!escolhaValida) {
-                            println("Você deseja jogar a peça em que ponta da mesa? ['E' - Esquerda | 'D' - Direita]")
-                            val opcaoPonta = readLine()?.firstOrNull()
-                            if (opcaoPonta == 'E' || opcaoPonta == 'e') {
-                                jogarNaMesa(pecaEscolhida, 'E')
-                                escolhaValida = true
-                            } else if (opcaoPonta == 'D' || opcaoPonta == 'd') {
-                                jogarNaMesa(pecaEscolhida, 'D')
-                                escolhaValida = true
-                            } else {
-                                println("Opção inválida! Digite 'E' para esquerda ou 'D' para direita!!!")
-                                println("Digite a opção masi segura para ")
-                            }
-                        }
-                    }
-                }
-
-                println()
-                println("Peça jogada: $pecaEscolhida")
-                println()
-
-                // Removendo a peça da mão do jogador
-                jogadorHumano.getMao().remove(pecaEscolhida)
-
-                // Alterando o turno
-                this.turno = false
-                cond = false
-                turnoPassadoSemJogar = 0
-
-            } else { // compra do montante caso não exista jogadas possíveis na mão
-                if(!montante.isEmpty()) {
-                    println("Comprando do montante!")
-                    readLine()
-                    jogadorHumano.getMao().add(montante.first())
-                    montante.removeAt(0)
-                } else {
-                    turno = false
-                    cond = false
-                    turnoPassadoSemJogar++
-                }
-            }
-            // Verificando se o jogo acabou
-            if(verificarFimDeJogo()){
-                this.fimDeJogo = true
-                return
-            }
-        }
     }
 
     fun maoValidaHumano() : Boolean {
@@ -547,6 +564,19 @@ class Jogo {
         return null
     }
 
+    fun somarPontos() {
+        var totalPontos : Int = 0
+        this.jogadorHumano.getMao().forEach { peca ->
+            totalPontos += peca.getLadoEsquerdo() + peca.getLadoDireito()
+        }
+        this.getJogadorMaquina().setPontuacao(totalPontos)
+        totalPontos = 0
+        this.jogadorMaquina.getMao().forEach { peca ->
+            totalPontos += peca.getLadoEsquerdo() + peca.getLadoDireito()
+        }
+        this.getJogadorHumano().setPontuacao(totalPontos)
+    }
+
     fun getFimDeJogo() : Boolean {
         return this.fimDeJogo
     }
@@ -585,5 +615,13 @@ class Jogo {
 
     fun incrementarTurnoSemPassar() {
         this.turnoPassadoSemJogar++
+    }
+
+    fun setModo(modo : Int){
+        this.modo = modo
+    }
+
+    fun getModo() : Int {
+        return this.modo
     }
 }
