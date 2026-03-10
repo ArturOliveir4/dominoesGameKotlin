@@ -12,10 +12,11 @@ object Database {
     private val jdbcUrl = "jdbc:sqlite:$dbPath"
 
     fun getConnection(): Connection {
-        if (!Files.exists(dbDir)) Files.createDirectories(dbDir)
-        return DriverManager.getConnection(jdbcUrl)
+        if (!Files.exists(dbDir)) Files.createDirectories(dbDir) //se a pasta data/ não existir, cria
+        return DriverManager.getConnection(jdbcUrl) //conexão com o SQLite (arquivo .db)
     }
 
+    // abre a conexão - garante que o banco já está pronto antes de tentar salvar ranking.
     fun init() {
         getConnection().use { conn ->
             conn.createStatement().use { st ->
