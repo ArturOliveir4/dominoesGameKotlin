@@ -17,37 +17,47 @@ class Jogo {
 
     constructor()
 
-    fun iniciarJogo(dificuldade : Int, modo : Int) {
+    fun iniciarJogo(dificuldade: Int, modo: Int) {
+        // limpar estado caso um novo jogo seja iniciado
+        mesa.clear()
+        montante.clear()
+        jogadorHumano.getMao().clear()
+        jogadorMaquina.getMao().clear()
+        pontaEsquerda = -1
+        pontaDireita = -1
+        turno = true
+        fimDeJogo = false
+        turnoPassadoSemJogar = 0
+        vencedor = null
 
-        // Salvando a dificuldade selecionada no jogador
-        if (dificuldade == 0){
-            this.jogadorHumano.setDificuldade("Facil")
-        } else if (dificuldade == 1){
-            this.jogadorHumano.setDificuldade("Medio")
-        } else{
-            this.jogadorHumano.setDificuldade("Dificil")
+        if (dificuldade == 0) {
+            jogadorHumano.setDificuldade("Fácil")
+        } else if (dificuldade == 1) {
+            jogadorHumano.setDificuldade("Médio")
+        } else {
+            jogadorHumano.setDificuldade("Difícil")
         }
 
-        // Salvando o modo de jogo escolhido
-        if(modo == 0){
+        if (modo == 0) {
             this.modo = 0
+            jogadorHumano.setModo("Clássico")
         } else {
             this.modo = 1
+            jogadorHumano.setModo("Pontos")
         }
 
-        this.jogadorHumano.setDificuldade("")
-        // Criando todas as peças do jogo e adicionando no montante
-        for(i in 0..6){
-            for(j in 0..6){
-                montante.add(Peca(i,j))
+        jogadorHumano.atualizarDataJogo()
+
+        // dominó tradicional = 28 peças
+        for (i in 0..6) {
+            for (j in i..6) {
+                montante.add(Peca(i, j))
             }
         }
 
-        // Embaralhando o montante
         montante.shuffle()
 
-        // Distribuindo as peças para os jogadores
-        for(i in 0..6){
+        for (i in 0..6) {
             jogadorMaquina.getMao().add(montante.removeAt(0))
             jogadorHumano.getMao().add(montante.removeAt(0))
         }
@@ -91,36 +101,45 @@ class Jogo {
     }
 
     fun iniciarJogoRapido(dificuldade: Int, modo: Int) {
+        mesa.clear()
+        montante.clear()
+        jogadorHumano.getMao().clear()
+        jogadorMaquina.getMao().clear()
+        pontaEsquerda = -1
+        pontaDireita = -1
+        turno = true
+        fimDeJogo = false
+        turnoPassadoSemJogar = 0
+        vencedor = null
 
-        // Salvando a dificuldade selecionada no jogador
-        if (dificuldade == 0){
-            this.jogadorHumano.setDificuldade("Facil")
-        } else if (dificuldade == 1){
-            this.jogadorHumano.setDificuldade("Medio")
-        } else{
-            this.jogadorHumano.setDificuldade("Dificil")
+        if (dificuldade == 0) {
+            jogadorHumano.setDificuldade("Fácil")
+        } else if (dificuldade == 1) {
+            jogadorHumano.setDificuldade("Médio")
+        } else {
+            jogadorHumano.setDificuldade("Difícil")
         }
 
-        // Salvando o modo de jogo escolhido
-        if(modo == 0){
+        if (modo == 0) {
             this.modo = 0
+            jogadorHumano.setModo("Clássico")
         } else {
             this.modo = 1
+            jogadorHumano.setModo("Pontos")
         }
 
-        this.jogadorHumano.setDificuldade("")
-        // Criando todas as peças do jogo e adicionando no montante
-        for(i in 0..2){
-            for(j in 0..2){
-                montante.add(Peca(i,j))
+        jogadorHumano.atualizarDataJogo()
+
+        // conjunto reduzido sem duplicar espelhadas
+        for (i in 0..2) {
+            for (j in i..2) {
+                montante.add(Peca(i, j))
             }
         }
 
-        // Embaralhando o montante
         montante.shuffle()
 
-        // Distribuindo as peças para os jogadores
-        for(i in 0..2){
+        for (i in 0..2) {
             jogadorMaquina.getMao().add(montante.removeAt(0))
             jogadorHumano.getMao().add(montante.removeAt(0))
         }

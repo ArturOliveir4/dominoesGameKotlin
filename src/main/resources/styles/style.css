@@ -12,8 +12,32 @@
     -fx-background-color: #445c9e;
 }
 
+.label-nome {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.input-nome {
+    -fx-max-width: 220px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #444;
+    -fx-padding: 8;
+}
+
 .botao-comecar {
     -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+.botao-ranking{
+    -fx-background-color: #ffd700;
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -175,4 +199,51 @@
     -fx-background-radius: 15;
     -fx-padding: 10 20 10 20;
     -fx-cursor: hand;
+}
+
+/* ====== TELA RANKING ====== */
+.tela-ranking {
+    -fx-alignment: center;
+    -fx-padding: 30;
+    -fx-spacing: 20;
+}
+
+/* Título do ranking */
+.titulo-ranking {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Tabela */
+.tabela-ranking {
+    -fx-max-width: 900px;
+    -fx-pref-height: 380px;
+    -fx-background-color: white;
+    -fx-border-color: #333333;
+    -fx-border-width: 2;
+    -fx-font-size: 14px;
+}
+
+/* Cabeçalho da tabela */
+.tabela-ranking .column-header-background {
+    -fx-background-color: #444444;
+}
+
+.tabela-ranking .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Linhas da tabela */
+.tabela-ranking .table-row-cell {
+    -fx-background-color: #f4f4f4;
+}
+
+.tabela-ranking .table-row-cell:odd {
+    -fx-background-color: #e9e9e9;
+}
+
+.tabela-ranking .table-row-cell:selected {
+    -fx-background-color: #bcdcff;
 }

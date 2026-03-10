@@ -14,13 +14,24 @@ import javafx.util.Duration
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.animation.PauseTransition
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.control.TextField
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.TransferMode
+import ranking.Database
+import ranking.RankingEntry
+import ranking.RankingRepository
+import java.time.format.DateTimeFormatter
 
 // Váriavel global da dificuldade
 object GameSession {
     var dificuldade: Int = 0
     var modo: Int = 0
+    var nomeJogador: String = "Humano"
 }
 
 // Funçãoo utilizada no turno da máquina
@@ -39,6 +50,7 @@ class DominóFX : Application() {
     // Inicializando as váriaveis principais de controle
     private var jogo = Jogo()
     private lateinit var root: VBox
+    private var rankingSalvo = false
 
     // Função que gera os ícones referentes a quantidade de peças restantes dos jogadores
     private fun gerarIconesRestantes(quantidade: Int): HBox {
@@ -74,8 +86,73 @@ class DominóFX : Application() {
         return imageView
     }
 
+    private fun salvarRankingSeNecessario() {
+        if (rankingSalvo) return
+
+        val humano = jogo.getJogadorHumano()
+
+        RankingRepository.salvarOuAtualizar(
+            RankingEntry(
+                nomeJogador = humano.getNome(),
+                modoJogo = humano.getModo(),
+                dificuldade = humano.getDificuldade(),
+                pontuacao = humano.getPontuacao(),
+                dataHora = humano.getDataJogo()
+            )
+        )
+
+        rankingSalvo = true
+    }
+
+    fun telaRanking(stage: Stage): Scene {
+        val titulo = Label("Top 5 - Ranking")
+        titulo.styleClass.add("titulo-ranking")
+
+        val tabela = TableView<RankingEntry>()
+        tabela.styleClass.add("tabela-ranking")
+
+        val colNome = TableColumn<RankingEntry, String>("Jogador")
+        colNome.setCellValueFactory { SimpleStringProperty(it.value.nomeJogador) }
+
+        val colModo = TableColumn<RankingEntry, String>("Modo")
+        colModo.setCellValueFactory { SimpleStringProperty(it.value.modoJogo) }
+
+        val colDificuldade = TableColumn<RankingEntry, String>("Dificuldade")
+        colDificuldade.setCellValueFactory { SimpleStringProperty(it.value.dificuldade) }
+
+        val colPontuacao = TableColumn<RankingEntry, Int>("Pontuação")
+        colPontuacao.setCellValueFactory { SimpleIntegerProperty(it.value.pontuacao).asObject() }
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+        val colData = TableColumn<RankingEntry, String>("Data/Hora")
+        colData.setCellValueFactory {
+            SimpleStringProperty(it.value.dataHora.format(formatter))
+        }
+
+        tabela.columns.addAll(colNome, colModo, colDificuldade, colPontuacao, colData)
+        tabela.items = FXCollections.observableArrayList(RankingRepository.top5())
+        tabela.columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+
+        val botaoVoltar = Button("Voltar")
+        botaoVoltar.styleClass.add("botao-voltar-menu")
+        botaoVoltar.setOnAction {
+            stage.scene = telaInicial(stage)
+            stage.isFullScreen = true
+        }
+
+        val rootRanking = VBox(20.0, titulo, tabela, botaoVoltar)
+        rootRanking.alignment = Pos.CENTER
+        rootRanking.styleClass.add("tela-ranking")
+
+        val scene = Scene(rootRanking, 900.0, 600.0)
+        scene.stylesheets.add(javaClass.getResource("/styles/style.css")!!.toExternalForm())
+        return scene
+    }
+
     // Função que inicializa a interface gráfica
     override fun start(stage: Stage) {
+        Database.init()
+
         val cena = telaInicial(stage) // cria a cena
         cena.stylesheets.add(javaClass.getResource("/styles/style.css").toExternalForm()) // linka o CSS
         stage.scene = cena
@@ -91,11 +168,19 @@ class DominóFX : Application() {
 
         val titulo = Label("Bem-vindo ao Dominó!")
 
+        val labelNome = Label("Nome do jogador:")
+        val inputNome = TextField()
+        inputNome.promptText = "Digite seu nome"
+        inputNome.text = GameSession.nomeJogador
         val botaoComecar = Button("Começar Jogo")
         val botaoSair = Button("Sair")
         val botaoDificuldade = Button("Dificuldade")
         val botaoModo = Button("Modo")
+        val botaoRanking = Button("Ranking")
 
+        labelNome.styleClass.add("label-nome")
+        inputNome.styleClass.add("input-nome")
+        botaoRanking.styleClass.add("botao-ranking")
         botaoComecar.styleClass.add("botao-comecar")
         botaoSair.styleClass.add("botao-sair")
         botaoDificuldade.styleClass.add("botao-dificuldade")
@@ -126,6 +211,14 @@ class DominóFX : Application() {
         dificil.styleClass.add("botao-facil")
 
         botaoComecar.setOnAction {
+            rankingSalvo = false
+
+            val nome = inputNome.text.trim()
+            GameSession.nomeJogador = if (nome.isBlank()) "Humano" else nome
+
+            // aplica no jogador humano (importante!)
+            jogo.getJogadorHumano().setNome(GameSession.nomeJogador)
+
             mostrarTelaJogo(stage)
         }
 
@@ -171,6 +264,11 @@ class DominóFX : Application() {
             Platform.exit()
         }
 
+        botaoRanking.setOnAction {
+            stage.scene = telaRanking(stage)
+            stage.isFullScreen = true
+        }
+
         opcoesDificuldade.children.addAll(facil, medio, dificil)
         ocpoesModo.children.addAll(classico, pontos)
 
@@ -180,7 +278,7 @@ class DominóFX : Application() {
         val menuModoVBox = VBox(15.0, botaoModo, ocpoesModo)
         menuModoVBox.alignment = Pos.CENTER
 
-        rootInicial.children.addAll(titulo, botaoComecar, menuVBox, menuModoVBox, botaoSair)
+        rootInicial.children.addAll(titulo, labelNome, inputNome, botaoComecar, menuVBox, menuModoVBox, botaoRanking, botaoSair)
 
         val sceneInicial = Scene(rootInicial, 600.0, 400.0)
         sceneInicial.stylesheets.add(javaClass.getResource("/styles/style.css")!!.toExternalForm())
@@ -191,8 +289,13 @@ class DominóFX : Application() {
 
 
     fun mostrarTelaJogo(stage: Stage) {
-        jogo.iniciarJogoRapido(GameSession.dificuldade, GameSession.modo)
-        jogo.primeiraJogadaRapido()
+        if (GameSession.modo == 0) {
+            jogo.iniciarJogo(GameSession.dificuldade, GameSession.modo)
+            jogo.primeiraJogada()
+        } else {
+            jogo.iniciarJogoRapido(GameSession.dificuldade, GameSession.modo)
+            jogo.primeiraJogadaRapido()
+        }
 
         val mensagem = Label("Começo de jogo!")
         val contadorMaquina = HBox(5.0)
@@ -218,7 +321,7 @@ class DominóFX : Application() {
         contadorHumano.children.add(Label("JOGADOR: "))
         contadorHumano.children.add(gerarIconesRestantes(jogo.getJogadorHumano().getMao().size))
         contadorMaquina.children.add(Label("CPU: "))
-        contadorMaquina.children.add(gerarIconesRestantes(jogo.getJogadorHumano().getMao().size))
+        contadorMaquina.children.add(gerarIconesRestantes(jogo.getJogadorMaquina().getMao().size))
 
         // Função correspondente a tela do jogo em si (Gerencia o fluxo do jogo)
         fun atualizarInterface() {
@@ -732,6 +835,7 @@ class DominóFX : Application() {
         acoesPane.alignment = Pos.CENTER
 
         if(mensagemVencedor != ""){
+            salvarRankingSeNecessario()
             val telaFinalRodada = VBox(20.0, label, labelVencedor)
             telaFinalRodada.alignment = Pos.CENTER
 
@@ -847,7 +951,10 @@ class DominóFX : Application() {
 
     // Tela de conclusão após o fim de jogo (Menu inicial, Sair)
     fun telaFimDeJogo(stage: Stage) : Scene {
-        if(jogo.getModo() == 1){
+        if (jogo.getModo() == 0) {
+            salvarRankingSeNecessario()
+        }
+        if (jogo.getModo() == 1) {
             stage.scene = telaFimRodada(stage)
             stage.isFullScreen = true
             return stage.scene

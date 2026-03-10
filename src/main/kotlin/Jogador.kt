@@ -1,34 +1,53 @@
-import java.time.LocalDate
+import java.time.LocalDateTime
 
-class Jogador {
-    private var nome: String
+class Jogador(private var nome: String) {
     private var mao: MutableList<Peca> = mutableListOf()
-    private var dificuldade: String? = null
-    private var modo : String? = null
-    private var pontuacao : Int = 0
-    private var dataJogo : LocalDate = LocalDate.now()
+    private var dificuldade: String = ""
+    private var modo: String = ""
+    private var pontuacao: Int = 0
+    private var dataJogo: LocalDateTime = LocalDateTime.now()
 
-    constructor(nome: String) {
-        this.nome = nome
-    }
-
-    fun getMao() : MutableList<Peca>{
+    fun getMao(): MutableList<Peca> {
         return mao
     }
 
-    fun getNome() : String {
-        return this.nome
+    fun getNome(): String {
+        return nome
     }
 
-    fun setDificuldade(dificuldade : String) {
+    fun setNome(nome: String) {
+        this.nome = nome
+    }
+
+    fun setDificuldade(dificuldade: String) {
         this.dificuldade = dificuldade
     }
 
-    fun setPontuacao(pontuacao : Int){
+    fun getDificuldade(): String {
+        return dificuldade
+    }
+
+    fun setModo(modo: String) {
+        this.modo = modo
+    }
+
+    fun getModo(): String {
+        return modo
+    }
+
+    fun setPontuacao(pontuacao: Int) {
         this.pontuacao += pontuacao
     }
 
-    fun getPontuacao() : Int {
-        return this.pontuacao
+    fun getPontuacao(): Int {
+        return pontuacao
+    }
+
+    fun atualizarDataJogo() {
+        this.dataJogo = LocalDateTime.now()
+    }
+
+    fun getDataJogo(): LocalDateTime {
+        return dataJogo
     }
 }
