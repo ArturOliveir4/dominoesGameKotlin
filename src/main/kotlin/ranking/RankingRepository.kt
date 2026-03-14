@@ -12,8 +12,8 @@ object RankingRepository {
             if (idExistente == null) {
                 // INSERT normal (faz um INSERT na tabela ranking)
                 val sql = """
-                INSERT INTO ranking (nome_jogador, modo_jogo, dificuldade, pontuacao, data_hora)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO ranking (nome_jogador, modo_jogo, dificuldade, pontuacao, resultado, data_hora)
+                VALUES (?, ?, ?, ?, ?, ?)
             """.trimIndent()
 
                 conn.prepareStatement(sql).use { ps ->
@@ -21,7 +21,8 @@ object RankingRepository {
                     ps.setString(2, entry.modoJogo)
                     ps.setString(3, entry.dificuldade)
                     ps.setInt(4, entry.pontuacao)
-                    ps.setString(5, entry.dataHora.toString())
+                    ps.setInt(5, entry.resultado)
+                    ps.setString(6, entry.dataHora.toString())
                     ps.executeUpdate()
                 }
             } else {
@@ -83,9 +84,9 @@ object RankingRepository {
     fun top5(): List<RankingEntry> {
         Database.getConnection().use { conn ->
             val sql = """
-                SELECT id, nome_jogador, modo_jogo, dificuldade, pontuacao, data_hora
+                SELECT id, nome_jogador, modo_jogo, dificuldade, pontuacao, resultado, data_hora
                 FROM ranking
-                ORDER BY pontuacao DESC, data_hora DESC --ordenado por pontuação, desempate por data/hora
+                ORDER BY pontuacao DESC, resultado DESC, data_hora DESC --ordenado por pontuação, desempate por data/hora + resultado p desempatar, ter vitoria ou perdas
                 LIMIT 5
             """.trimIndent()
 
@@ -100,6 +101,7 @@ object RankingRepository {
                                 modoJogo = rs.getString("modo_jogo"),
                                 dificuldade = rs.getString("dificuldade"),
                                 pontuacao = rs.getInt("pontuacao"),
+                                resultado = rs.getInt("resultado"),
                                 dataHora = LocalDateTime.parse(rs.getString("data_hora"))
                             )
                         )

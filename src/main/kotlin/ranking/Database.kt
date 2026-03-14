@@ -28,6 +28,7 @@ object Database {
                         modo_jogo TEXT NOT NULL,
                         dificuldade TEXT NOT NULL,
                         pontuacao INTEGER NOT NULL,
+                        resultado INTEGER NOT NULL, -- resultado se foi vitoria, empate ou perdeu
                         data_hora TEXT NOT NULL
                     );
                     """.trimIndent()

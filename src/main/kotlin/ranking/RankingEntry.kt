@@ -9,5 +9,6 @@ data class RankingEntry(
     val modoJogo: String,
     val dificuldade: String,
     val pontuacao: Int,
+    val resultado: Int, // resultado, 3=vitoria, 1=empate, 0=perdeu
     val dataHora: LocalDateTime
 )

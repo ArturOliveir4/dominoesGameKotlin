@@ -91,12 +91,21 @@ class DominóFX : Application() {
 
         val humano = jogo.getJogadorHumano()
 
+        val vencedor = jogo.getVencedor()
+
+        val resultado = when {
+            vencedor == humano -> 3
+            vencedor == null -> 1
+            else -> 0
+        }
+
         RankingRepository.salvarOuAtualizar(
             RankingEntry(
                 nomeJogador = humano.getNome(),
                 modoJogo = humano.getModo(),
                 dificuldade = humano.getDificuldade(),
                 pontuacao = humano.getPontuacao(),
+                resultado = resultado,
                 dataHora = humano.getDataJogo()
             )
         )
@@ -123,13 +132,25 @@ class DominóFX : Application() {
         val colPontuacao = TableColumn<RankingEntry, Int>("Pontuação")
         colPontuacao.setCellValueFactory { SimpleIntegerProperty(it.value.pontuacao).asObject() }
 
+        // os resultados de vitoria, empate ou se perdeu
+        val colResultado = TableColumn<RankingEntry, String>("Resultado")
+        colResultado.setCellValueFactory {
+            val texto = when (it.value.resultado) {
+                3 -> "Vitória"
+                1 -> "Empate"
+                else -> "Derrota"
+            }
+            SimpleStringProperty(texto)
+        }
+
+
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
         val colData = TableColumn<RankingEntry, String>("Data/Hora")
         colData.setCellValueFactory {
             SimpleStringProperty(it.value.dataHora.format(formatter))
         }
-
-        tabela.columns.addAll(colNome, colModo, colDificuldade, colPontuacao, colData)
+//
+        tabela.columns.addAll(colNome, colModo, colDificuldade, colPontuacao, colResultado, colData)
         tabela.items = FXCollections.observableArrayList(RankingRepository.top5())
         tabela.columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
 
@@ -977,6 +998,15 @@ class DominóFX : Application() {
         val botaoVoltar = Button("Menu Inicial")
         botaoVoltar.styleClass.add("botao-voltar-menu")
 
+        //botao para ver o ranking no fim do jogo:
+        val botaoRanking = Button("Ver Ranking")
+        botaoRanking.styleClass.add("botao-ranking")
+
+        botaoRanking.setOnAction {
+            stage.scene = telaRanking(stage)
+            stage.isFullScreen = true
+        }
+
         botaoVoltar.setOnMouseEntered {
             botaoVoltar.style = """
                 -fx-background-color: #3bd46f;  
@@ -1068,6 +1098,9 @@ class DominóFX : Application() {
         botaoVoltar.alignment = Pos.CENTER
         botaoSair.alignment = Pos.CENTER
         acoesPane.children.add(botaoVoltar)
+
+        acoesPane.children.add(botaoRanking)
+
         acoesPane.children.add(botaoSair)
 
         val scene = Scene(telaFinal, 800.0, 600.0)
