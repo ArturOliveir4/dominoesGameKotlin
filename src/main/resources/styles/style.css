@@ -12,32 +12,8 @@
     -fx-background-color: #445c9e;
 }
 
-.label-nome {
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.input-nome {
-    -fx-max-width: 220px;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: #444;
-    -fx-padding: 8;
-}
-
 .botao-comecar {
     -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 15;
-    -fx-padding: 10 20 10 20;
-    -fx-cursor: hand;
-}
-
-.botao-ranking{
-    -fx-background-color: #ffd700;
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -116,6 +92,18 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.0), 0, 0, 0, 0);
 }
 
+.botao-peca-mao:hover {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 100px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
 .botao-direita-mao{
     -fx-background-color: #99ffbb;
     -fx-border-color: #2e7d32;
@@ -131,6 +119,21 @@
     -fx-cursor: hand;
 }
 
+.botao-direita-mao:hover {
+    -fx-background-color: #77e099;
+    -fx-border-color: #1b5e20;
+    -fx-border-width: 3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-pref-width: 95px;
+    -fx-pref-height: 55px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
 .botao-comprar{
     -fx-background-color: #828181;
     -fx-text-fill: white;
@@ -138,6 +141,17 @@
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.botao-comprar:hover {
+    -fx-background-color: #9a9a9a;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
     -fx-cursor: hand;
 }
 
@@ -151,6 +165,17 @@
     -fx-cursor: hand;
 }
 
+.bota-sair-mao:hover {
+    -fx-background-color: #e06b6b;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
 .botao-voltar-menu{
     -fx-background-color: #26ff6f;
     -fx-text-fill: white;
@@ -158,6 +183,17 @@
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.botao-voltar-menu:hover {
+    -fx-background-color: #3bd46f;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
     -fx-cursor: hand;
 }
 
@@ -171,6 +207,17 @@
     -fx-cursor: hand;
 }
 
+.botao-continuar-menu-rodada:hover {
+    -fx-background-color: #3bd46f;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
 .botao-sair-tela-final{
     -fx-background-color: #a30013;
     -fx-text-fill: white;
@@ -178,6 +225,17 @@
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+}
+
+.botao-sair-tela-final:hover {
+    -fx-background-color: #f7485c;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
     -fx-cursor: hand;
 }
 
@@ -191,6 +249,17 @@
     -fx-cursor: hand;
 }
 
+.botao-sair-menu-rodada:hover {
+    -fx-background-color: #f7485c;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
 .botao-modo{
     -fx-background-color: #39dbbe;
     -fx-text-fill: white;
@@ -201,49 +270,19 @@
     -fx-cursor: hand;
 }
 
-/* ====== TELA RANKING ====== */
-.tela-ranking {
-    -fx-alignment: center;
-    -fx-padding: 30;
-    -fx-spacing: 20;
-}
-
-/* Título do ranking */
-.titulo-ranking {
-    -fx-font-size: 32px;
+.status-turno {
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 10;
 }
 
-/* Tabela */
-.tabela-ranking {
-    -fx-max-width: 900px;
-    -fx-pref-height: 380px;
-    -fx-background-color: white;
-    -fx-border-color: #333333;
-    -fx-border-width: 2;
-    -fx-font-size: 14px;
+.status-humano {
+    -fx-background-color: #d8f3dc;
+    -fx-text-fill: #1b4332;
 }
 
-/* Cabeçalho da tabela */
-.tabela-ranking .column-header-background {
-    -fx-background-color: #444444;
-}
-
-.tabela-ranking .column-header .label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-/* Linhas da tabela */
-.tabela-ranking .table-row-cell {
-    -fx-background-color: #f4f4f4;
-}
-
-.tabela-ranking .table-row-cell:odd {
-    -fx-background-color: #e9e9e9;
-}
-
-.tabela-ranking .table-row-cell:selected {
-    -fx-background-color: #bcdcff;
+.status-maquina {
+    -fx-background-color: #ffe8cc;
+    -fx-text-fill: #7f5539;
 }

@@ -1,28 +1,22 @@
-public class Peca {
-    private var ladoEsquerdo : Int
-    private var ladoDireito : Int
-
-    constructor(lado_esquerdo : Int, lado_direito : Int){
-        this.ladoEsquerdo = lado_esquerdo
-        this.ladoDireito = lado_direito
+class Peca(
+    private var ladoEsquerdo: Int,
+    private var ladoDireito: Int
+) {
+    fun getLadoEsquerdo(): Int {
+        return ladoEsquerdo
     }
 
-    fun getLadoEsquerdo() : Int{
-        return this.ladoEsquerdo
-    }
-
-    fun getLadoDireito() : Int{
-        return this.ladoDireito
+    fun getLadoDireito(): Int {
+        return ladoDireito
     }
 
     override fun toString(): String {
         return "[$ladoEsquerdo|$ladoDireito]"
     }
 
-    fun girar(){
-        val temp = this.ladoEsquerdo
-        this.ladoEsquerdo = this.ladoDireito
-        this.ladoDireito = temp
+    fun girar() {
+        val temp = ladoEsquerdo
+        ladoEsquerdo = ladoDireito
+        ladoDireito = temp
     }
-
 }

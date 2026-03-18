@@ -1,11 +1,7 @@
-import java.time.LocalDateTime
-
-class Jogador(private var nome: String) {
-    private var mao: MutableList<Peca> = mutableListOf()
-    private var dificuldade: String = ""
-    private var modo: String = ""
+class Jogador(private val nome: String) {
+    private val mao: MutableList<Peca> = mutableListOf()
+    private var dificuldade: String? = null
     private var pontuacao: Int = 0
-    private var dataJogo: LocalDateTime = LocalDateTime.now()
 
     fun getMao(): MutableList<Peca> {
         return mao
@@ -15,24 +11,8 @@ class Jogador(private var nome: String) {
         return nome
     }
 
-    fun setNome(nome: String) {
-        this.nome = nome
-    }
-
     fun setDificuldade(dificuldade: String) {
         this.dificuldade = dificuldade
-    }
-
-    fun getDificuldade(): String {
-        return dificuldade
-    }
-
-    fun setModo(modo: String) {
-        this.modo = modo
-    }
-
-    fun getModo(): String {
-        return modo
     }
 
     fun setPontuacao(pontuacao: Int) {
@@ -41,13 +21,5 @@ class Jogador(private var nome: String) {
 
     fun getPontuacao(): Int {
         return pontuacao
-    }
-
-    fun atualizarDataJogo() {
-        this.dataJogo = LocalDateTime.now()
-    }
-
-    fun getDataJogo(): LocalDateTime {
-        return dataJogo
     }
 }
