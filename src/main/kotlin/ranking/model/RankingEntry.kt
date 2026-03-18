@@ -1,4 +1,4 @@
-package ranking
+package ranking.model
 
 import java.time.LocalDateTime
 
@@ -10,5 +10,6 @@ data class RankingEntry(
     val dificuldade: String,
     val pontuacao: Int,
     val resultado: Int, // resultado, 3=vitoria, 1=empate, 0=perdeu
+    val pontosMao: Int = 0,
     val dataHora: LocalDateTime
 )

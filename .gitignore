@@ -43,3 +43,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Projeto Domino (dados locais) ###
+/data/
+/ranking.db
+*.sqlite
+*.sqlite3
+*.db

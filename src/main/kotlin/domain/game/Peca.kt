@@ -1,19 +1,17 @@
-class Peca(
-    private var ladoEsquerdo: Int,
-    private var ladoDireito: Int
-) {
-    fun getLadoEsquerdo(): Int {
-        return ladoEsquerdo
-    }
+package domain.game
 
-    fun getLadoDireito(): Int {
-        return ladoDireito
-    }
+class Peca(
+    var ladoEsquerdo: Int,
+    var ladoDireito: Int
+) {
 
     override fun toString(): String {
         return "[$ladoEsquerdo|$ladoDireito]"
     }
 
+    /**
+     * Inverte os lados da peca para adequar a orientacao na mesa.
+     */
     fun girar() {
         val temp = ladoEsquerdo
         ladoEsquerdo = ladoDireito

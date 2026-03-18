@@ -1,4 +1,6 @@
-package ranking
+@file:Suppress("SqlNoDataSourceInspection", "SqlDialectInspection")
+
+package ranking.db
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -11,12 +13,17 @@ object Database {
     private val dbPath = dbDir.resolve("ranking.db").toString()
     private val jdbcUrl = "jdbc:sqlite:$dbPath"
 
+    /**
+     * Garante pasta de dados e abre conexao SQLite para o arquivo local.
+     */
     fun getConnection(): Connection {
         if (!Files.exists(dbDir)) Files.createDirectories(dbDir) //se a pasta data/ não existir, cria
         return DriverManager.getConnection(jdbcUrl) //conexão com o SQLite (arquivo .db)
     }
 
-    // abre a conexão - garante que o banco já está pronto antes de tentar salvar ranking.
+    /**
+     * Inicializa o schema do banco e aplica migracao para bases antigas.
+     */
     fun init() {
         getConnection().use { conn ->
             conn.createStatement().use { st ->
@@ -29,10 +36,18 @@ object Database {
                         dificuldade TEXT NOT NULL,
                         pontuacao INTEGER NOT NULL,
                         resultado INTEGER NOT NULL, -- resultado se foi vitoria, empate ou perdeu
+                        pontos_mao INTEGER NOT NULL DEFAULT 0,
                         data_hora TEXT NOT NULL
                     );
                     """.trimIndent()
                 )
+
+                // Migração para bancos antigos que ainda não possuem a coluna pontos_mao.
+                try {
+                    st.execute("ALTER TABLE ranking ADD COLUMN pontos_mao INTEGER NOT NULL DEFAULT 0")
+                } catch (_: Exception) {
+                    // Ignora quando a coluna já existe.
+                }
             }
         }
     }
