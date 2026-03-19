@@ -6,7 +6,7 @@ import javafx.stage.Stage
 
 object BotaoNavegacaoFactory {
     /**
-     * Cria botao padrao para voltar ao menu inicial.
+     * Cria botao padrão para voltar ao menu inicial.
      */
     fun criarBotaoVoltarParaInicio(app: DominoApp, stage: Stage): Button {
         val botaoVoltar = Button("Voltar")

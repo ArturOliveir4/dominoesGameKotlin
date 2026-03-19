@@ -88,7 +88,7 @@ class RenderizadorMesaJogo(
     }
 
     /**
-     * Posiciona botoes temporarios para escolha do lado quando peca encaixa nos dois lados.
+     * Posiciona botoes temporários para escolha do lado quando peca encaixa nos dois lados.
      */
     fun posicionarBotoesEscolhaLado(btnEsquerda: Button, btnDireita: Button) {
         val mesaAtual = fornecedorJogo().mesa
@@ -127,7 +127,7 @@ class RenderizadorMesaJogo(
     }
 
     /**
-     * Recalcula escala e posicao horizontal da fileira de pecas.
+     * Recalcula escala e posição horizontal da fileira de pecas.
      */
     private fun atualizarLayoutMesa(quantidadePecas: Int, margemExtraLateral: Double = 0.0) {
         if (quantidadePecas <= 0) {
@@ -154,7 +154,7 @@ class RenderizadorMesaJogo(
     }
 
     /**
-     * Remove botoes que nao pertencem mais ao estado atual da mesa.
+     * Remove botoes que não pertencem mais ao estado atual da mesa.
      */
     private fun removerBotoesDaMesaNaoUtilizados(pecasAtuais: Set<Peca>) {
         botoesMesaPorPeca.entries.removeIf { entrada ->

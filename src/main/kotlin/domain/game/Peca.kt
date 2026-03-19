@@ -10,7 +10,7 @@ class Peca(
     }
 
     /**
-     * Inverte os lados da peca para adequar a orientacao na mesa.
+     * Inverte os lados da peca para adequar a orientação na mesa.
      */
     fun girar() {
         val temp = ladoEsquerdo

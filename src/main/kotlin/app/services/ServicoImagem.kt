@@ -7,7 +7,7 @@ class ServicoImagem {
     private val cacheImagens = mutableMapOf<String, Image>()
 
     /**
-     * Busca imagem no cache e carrega do recurso apenas quando necessario.
+     * Busca imagem no cache e carrega do recurso apenas quando necessário.
      */
     private fun obterImagem(caminho: String): Image {
         return cacheImagens.getOrPut(caminho) {

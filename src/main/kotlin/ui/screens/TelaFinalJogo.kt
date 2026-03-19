@@ -14,7 +14,7 @@ import javafx.stage.Stage
 
 class TelaFinalJogo(private val app: DominoApp) {
     /**
-     * Monta a tela de encerramento com resultado, ranking e navegacao.
+     * Monta a tela de encerramento com resultado, "ranking" e navegação.
      */
     fun criar(stage: Stage): Scene {
         app.servicoRankingUi.registrarResultadoNoRanking(app.jogo)

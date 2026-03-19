@@ -28,7 +28,7 @@ object GameSession {
 }
 
 /**
- * Executa uma acao apos um pequeno atraso.
+ * Executa uma ação após um pequeno atraso.
  * Usado para dar ritmo visual ao turno da IA.
  */
 fun executarComDelay(delaySegundos: Double, acao: () -> Unit) {
@@ -54,8 +54,8 @@ class DominoApp : Application() {
     private val telaRankingGeral by lazy { TelaRankingGeral(this) }
 
     /**
-     * Cria a cena principal na primeira chamada e reaproveita nas proximas,
-     * trocando apenas o root para evitar recriacao desnecessaria.
+     * Cria a cena principal na primeira chamada e reaproveita nas próximas,
+     * trocando apenas o root para evitar recriação desnecessária.
      */
     internal fun atualizarCena(novoRoot: Parent, largura: Double = 600.0, altura: Double = 400.0): Scene {
         if (!::cenaPrincipal.isInitialized) {
@@ -96,7 +96,7 @@ class DominoApp : Application() {
     }
 
     /**
-     * Inicializa banco e abre a primeira tela da aplicacao.
+     * Inicializa banco e abre a primeira tela da aplicação.
      */
     override fun start(stage: Stage) {
         Database.init()
@@ -128,14 +128,14 @@ class DominoApp : Application() {
     }
 
     /**
-     * Retorna a cena com historico de partidas.
+     * Retorna a cena com histórico de partidas.
      */
     fun telaRanking(stage: Stage): Scene {
         return telaHistoricoPartidas.criar(stage)
     }
 
     /**
-     * Retorna a cena com ranking geral agregado.
+     * Retorna a cena com "ranking" geral agregado.
      */
     fun telaRankingGeral(stage: Stage): Scene {
         return telaRankingGeral.criar(stage)
@@ -144,7 +144,7 @@ class DominoApp : Application() {
 }
 
 /**
- * Ponto de entrada da aplicacao JavaFX.
+ * Ponto de entrada da aplicação JavaFX.
  */
 fun main(){
     Application.launch(DominoApp::class.java)

@@ -16,7 +16,7 @@ import ranking.repository.RankingRepository
 
 class TelaRankingGeral(private val app: DominoApp) {
     /**
-     * Monta a tela com ranking agregado por jogador.
+     * Monta a tela com "ranking" agregado por jogador.
      */
     fun criar(stage: Stage): Scene {
         val titulo = javafx.scene.control.Label("Ranking Geral")

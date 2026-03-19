@@ -40,7 +40,7 @@ object RankingRepository {
     }
 
     /**
-     * Salva uma partida como novo registro no ranking.
+     * Salva uma partida como novo registro no "ranking".
      */
     fun salvarOuAtualizar(entry: RankingEntry) {
         Database.getConnection().use { conn ->
@@ -86,7 +86,7 @@ object RankingRepository {
     }
 
     /**
-     * Retorna as ultimas partidas, respeitando o limite informado.
+     * Retorna as últimas partidas, respeitando o limite informado.
      */
     fun ultimasPartidas(limit: Int = 5): List<RankingEntry> {
         Database.getConnection().use { conn ->

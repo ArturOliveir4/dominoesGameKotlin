@@ -3,6 +3,7 @@ package ui.screens
 import app.DominoApp
 import app.GameSession
 import domain.game.Dificuldade
+import domain.game.paraTexto
 import javafx.application.Platform
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -113,13 +114,9 @@ class TelaInicial(private val app: DominoApp) {
         val linhaAcoes = HBox(10.0, botaoVoltar, botaoSair)
         linhaAcoes.alignment = Pos.CENTER
 
-        // Atualiza o resumo visivel com nome e dificuldade atuais.
+        // Atualiza o resumo visível com nome e dificuldade atuais.
         fun atualizarResumo() {
-            val dificuldadeTxt = when (GameSession.dificuldade) {
-                Dificuldade.FACIL -> "Fácil"
-                Dificuldade.MEDIO -> "Médio"
-                Dificuldade.DIFICIL -> "Difícil"
-            }
+            val dificuldadeTxt = GameSession.dificuldade.paraTexto(acentuado = true)
             subtitulo.text = "Nome: ${GameSession.nomeJogador} | Dificuldade: $dificuldadeTxt"
         }
 

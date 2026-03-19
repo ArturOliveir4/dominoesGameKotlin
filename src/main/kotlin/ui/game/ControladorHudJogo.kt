@@ -71,7 +71,7 @@ class ControladorHudJogo(
     }
 
     /**
-     * Fabrica botao de acao com classe CSS e animacao de hover.
+     * Fabrica botao de ação com classe CSS e animação de hover.
      */
     fun criarBotaoAcao(texto: String, cssClass: String, escalaHover: Double = 1.05): Button {
         val botao = Button(texto)

@@ -22,7 +22,7 @@ object Database {
     }
 
     /**
-     * Inicializa o schema do banco e aplica migracao para bases antigas.
+     * Inicializa o schema do banco e aplica migração para bases antigas.
      */
     fun init() {
         getConnection().use { conn ->

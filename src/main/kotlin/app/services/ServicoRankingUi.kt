@@ -3,6 +3,10 @@ package app.services
 import app.GameSession
 import domain.game.Dificuldade
 import domain.game.Jogo
+import domain.game.paraPontuacaoResultadoHumano
+import domain.game.paraTexto
+import domain.game.paraTextoResultado
+import domain.game.somarPontosMao
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
@@ -12,23 +16,15 @@ import java.time.LocalDateTime
 
 class ServicoRankingUi {
     /**
-     * Converte resultado da rodada atual e grava no banco de ranking.
+     * Converte resultado da rodada atual e grava no banco de "ranking".
      */
     fun registrarResultadoNoRanking(jogo: Jogo) {
         val vencedor = jogo.vencedor
-        val resultado = when (vencedor?.nome) {
-            "Humano" -> 3
-            "Maquina" -> 0
-            else -> 1
-        }
+        val resultado = vencedor.paraPontuacaoResultadoHumano()
         val pontosMaoJogador = jogo.jogadorHumano.mao
-            .sumOf { it.ladoEsquerdo + it.ladoDireito }
+            .somarPontosMao()
 
-        val dificuldadeTexto = when (GameSession.dificuldade) {
-            Dificuldade.FACIL -> "Facil"
-            Dificuldade.MEDIO -> "Medio"
-            Dificuldade.DIFICIL -> "Dificil"
-        }
+        val dificuldadeTexto = GameSession.dificuldade.paraTexto()
 
         RankingRepository.salvarOuAtualizar(
             RankingEntry(
@@ -44,7 +40,7 @@ class ServicoRankingUi {
     }
 
     /**
-     * Cria painel resumido com os 5 melhores jogadores do ranking geral.
+     * Cria painel resumido com os 5 melhores jogadores do "ranking" geral.
      */
     fun criarPainelTop5Ranking(): VBox {
         val painel = VBox(6.0)
@@ -88,11 +84,7 @@ class ServicoRankingUi {
         }
 
         ultimas.forEachIndexed { index, item ->
-            val resultadoTexto = when (item.resultado) {
-                3 -> "Vitória"
-                1 -> "Empate"
-                else -> "Derrota"
-            }
+            val resultadoTexto = item.resultado.paraTextoResultado()
             val linha = Label(
                 "${index + 1}. ${item.nomeJogador} | mão: ${item.pontosMao} pts | $resultadoTexto"
             )

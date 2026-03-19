@@ -191,7 +191,7 @@ class TelaJogo(private val app: DominoApp) {
                 atualizarInterface()
             }
 
-            // Reproduz compras sequenciais da IA para feedback visual.
+            // Reproduz compras sequenciais da IA para "feedback" visual.
             fun animarCompraIA(indice: Int) {
                 if (indice >= compras.size) {
                     finalizarTurnoMaquina()
@@ -215,7 +215,7 @@ class TelaJogo(private val app: DominoApp) {
             animarCompraIA(0)
         }
 
-        // Aplica jogada do humano no lado escolhido e atualiza interface.
+        // Aplica jogada do humano no lado escolhido e atualiza "interface".
         fun jogarPecaHumano(peca: Peca, lado: Char) {
             reservaLateralEscolhaAtiva = false
             aguardandoConclusaoZoomEscolha = false
@@ -487,7 +487,7 @@ class TelaJogo(private val app: DominoApp) {
     }
 
     /**
-     * Configura propriedades de layout e vinculos do topo da tela.
+     * Configura propriedades de layout e vínculos do topo da tela.
      */
     private fun configurarLayoutInicial(
         painelRaiz: VBox,

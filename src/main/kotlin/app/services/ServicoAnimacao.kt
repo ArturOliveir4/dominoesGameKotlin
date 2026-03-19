@@ -10,7 +10,7 @@ import javafx.util.Duration
 
 class ServicoAnimacao {
     /**
-     * Aplica animacao de hover com escala em botoes.
+     * Aplica animação de hover com escala em botões.
      */
     fun aplicarHoverComEscala(
         botao: Button,
@@ -33,7 +33,7 @@ class ServicoAnimacao {
     }
 
     /**
-     * Anima entrada de no na mesa com fade, slide e zoom.
+     * Anima entrada de no na mesa com fade, slide e "zoom".
      */
     fun animarEntradaNaMesa(no: Node, entrouNaEsquerda: Boolean, atrasoMs: Double = 200.0) {
         no.opacity = 0.0

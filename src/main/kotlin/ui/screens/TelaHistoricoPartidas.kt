@@ -1,6 +1,7 @@
 package ui.screens
 
 import app.DominoApp
+import domain.game.paraTextoResultado
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
@@ -55,11 +56,7 @@ class TelaHistoricoPartidas(private val app: DominoApp) {
 
         val colResultado = TableColumn<RankingEntry, String>("Resultado")
         colResultado.setCellValueFactory { cellData ->
-            val texto = when (cellData.value.resultado) {
-                3 -> "Vitória"
-                1 -> "Empate"
-                else -> "Derrota"
-            }
+            val texto = cellData.value.resultado.paraTextoResultado()
             SimpleStringProperty(texto)
         }
 

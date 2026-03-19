@@ -20,7 +20,7 @@ class FabricaVisualPeca(private val servicoImagem: ServicoImagem) {
     }
 
     /**
-     * Gera icones de verso para exibir quantidade de pecas restantes.
+     * Gera ícones de verso para exibir quantidade de pecas restantes.
      */
     fun gerarIconesRestantes(quantidade: Int): HBox {
         val contenedor = HBox(5.0)
@@ -69,7 +69,7 @@ class FabricaVisualPeca(private val servicoImagem: ServicoImagem) {
     }
 
     /**
-     * Monta o botao visual de peca para a mesa.
+     * Monta o botão visual de peca para a mesa.
      */
     fun criarBotaoPecaMesa(peca: Peca): Button {
         val btn = Button()
@@ -101,7 +101,7 @@ class FabricaVisualPeca(private val servicoImagem: ServicoImagem) {
     }
 
     /**
-     * Monta o botao visual de peca para a mao do jogador.
+     * Monta o botão visual de peca para a mao do jogador.
      */
     fun criarBotaoPecaMao(peca: Peca): Button {
         val btn = Button()

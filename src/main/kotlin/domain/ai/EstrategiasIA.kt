@@ -16,6 +16,19 @@ data class ContextoEstrategiaIA(
     val pontaDireita: Int
 )
 
+/**
+ * Resolve o lado da jogada quando uma peça pode ter 1 ou 2 encaixes.
+ * Se só houver um lado possível, retorna esse lado.
+ * Se ambos os lados forem possíveis, usa a estratégia de desempate recebida.
+ */
+private fun escolherLado(lados: LadosJogadaIA, desempateAmbosLados: () -> Char): Char {
+    return when {
+        lados.podeEsquerda && !lados.podeDireita -> 'E'
+        !lados.podeEsquerda && lados.podeDireita -> 'D'
+        else -> desempateAmbosLados()
+    }
+}
+
 interface EstrategiaIA {
     /**
      * Escolhe qual peca a IA joga e em qual lado da mesa.
@@ -25,15 +38,11 @@ interface EstrategiaIA {
 
 class EstrategiaFacil : EstrategiaIA {
     /**
-     * Estrategia simples: pega a primeira opcao valida disponivel.
+     * Estrategia simples: pega a primeira opção valida disponível.
      */
     override fun escolher(opcoes: List<OpcaoJogadaIA>, contexto: ContextoEstrategiaIA): Pair<Peca, Char> {
         val escolha = opcoes.first()
-        val lado = when {
-            escolha.lados.podeEsquerda && !escolha.lados.podeDireita -> 'E'
-            !escolha.lados.podeEsquerda && escolha.lados.podeDireita -> 'D'
-            else -> 'D'
-        }
+        val lado = escolherLado(escolha.lados) { 'D' }
         return Pair(escolha.peca, lado)
     }
 }
@@ -44,10 +53,8 @@ class EstrategiaMedia : EstrategiaIA {
      */
     override fun escolher(opcoes: List<OpcaoJogadaIA>, contexto: ContextoEstrategiaIA): Pair<Peca, Char> {
         val escolha = opcoes.maxByOrNull { it.soma } ?: opcoes.first()
-        val lado = when {
-            escolha.lados.podeEsquerda && !escolha.lados.podeDireita -> 'E'
-            !escolha.lados.podeEsquerda && escolha.lados.podeDireita -> 'D'
-            else -> if ((0..1).random() == 0) 'E' else 'D'
+        val lado = escolherLado(escolha.lados) {
+            if ((0..1).random() == 0) 'E' else 'D'
         }
         return Pair(escolha.peca, lado)
     }
@@ -55,7 +62,7 @@ class EstrategiaMedia : EstrategiaIA {
 
 class EstrategiaDificil : EstrategiaIA {
     /**
-     * Escolhe jogada com base na frequencia de numeros na mao para manter vantagem.
+     * Escolhe jogada com base na frequencia de números na mao para manter vantagem.
      */
     override fun escolher(opcoes: List<OpcaoJogadaIA>, contexto: ContextoEstrategiaIA): Pair<Peca, Char> {
         val frequenciaNumeros = mutableMapOf<Int, Int>()
@@ -79,11 +86,7 @@ class EstrategiaDificil : EstrategiaIA {
             'D'
         }
 
-        val lado = when {
-            escolha.lados.podeEsquerda && !escolha.lados.podeDireita -> 'E'
-            !escolha.lados.podeEsquerda && escolha.lados.podeDireita -> 'D'
-            else -> ladoPreferido
-        }
+        val lado = escolherLado(escolha.lados) { ladoPreferido }
 
         return Pair(escolha.peca, lado)
     }
