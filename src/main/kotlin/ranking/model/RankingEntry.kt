@@ -2,7 +2,7 @@ package ranking.model
 
 import java.time.LocalDateTime
 
-// representa 1 registro do ranking (1 partida salva)
+// representa 1 partida individual salva
 data class RankingEntry(
     val id: Long? = null, //null quando você cria um objeto novo antes de salvar
     val nomeJogador: String,
