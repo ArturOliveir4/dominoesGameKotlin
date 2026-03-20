@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 // responsável por acessar o SQLite e executar as operações
 object RankingRepository {
     /**
-     * Mapeia uma linha do ResultSet para RankingEntry. (essa função lê essas colunas e monta um objeto.)
+     * Transforma uma linha retornada pelo banco em um objeto Kotlin RankingEntry.
      * o SQL retorna um ResultSet (contém os valores das colunas);
      * essa função lê essas colunas e monta um objeto kotlin
      */
