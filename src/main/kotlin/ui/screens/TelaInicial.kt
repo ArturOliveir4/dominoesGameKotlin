@@ -73,6 +73,12 @@ class TelaInicial(private val app: DominoApp) {
         AnchorPane.setRightAnchor(blocoRanking, 16.0)
 
         val titulo = Label("Bem-vindo ao Dominó!")
+        titulo.style = """
+            -fx-font-size: 32px;
+            -fx-font-weight: bold;
+            -fx-text-fill: black;
+            -fx-effect: dropshadow(gaussian, rgba(26, 45, 78, 0.28), 12, 0.15, 0, 3);
+        """.trimIndent()
         val subtitulo = Label("")
 
         val inputNome = TextField(GameSession.nomeJogador)
