@@ -53,8 +53,8 @@ object RankingRepository {
             """.trimIndent()
 
             conn.prepareStatement(sql).use { ps ->
-                ps.setString(1, entry.nomeJogador)
-                ps.setString(2, entry.modoJogo)
+                ps.setString(1, entry.nomeJogador) // substitui o primeiro ? pelo nome do jogador.
+                ps.setString(2, entry.modoJogo) // substitui o segundo ? pelo modo.
                 ps.setString(3, entry.dificuldade)
                 ps.setInt(4, entry.pontuacao)
                 ps.setInt(5, entry.resultado)
