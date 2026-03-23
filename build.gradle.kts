@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.0"
     id("application")
-    id("org.openjfx.javafxplugin") version "0.0.14" // plugin JavaFX
+    id("org.openjfx.javafxplugin") version "0.1.0" // plugin JavaFX
 }
 
 repositories {
@@ -14,23 +14,20 @@ javafx {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainModule.set("dominoes.game.kotlin")
+    mainClass.set("app.MainKt")
 }
-
 
 dependencies {
-    // Dependências JavaFX
-    implementation("org.openjfx:javafx-controls:21.0.8")
-    implementation("org.openjfx:javafx-fxml:21.0.8")
-
     testImplementation(kotlin("test"))
-}
-
-application {
-    // Classe principal
-    mainClass.set("MainKt")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.13")
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+tasks.withType<JavaExec>().configureEach {
+    modularity.inferModulePath.set(true)
 }
